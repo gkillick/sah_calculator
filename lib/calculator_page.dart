@@ -15,14 +15,6 @@ class CalculatorPage extends StatefulWidget {
 }
 
 class _CalculatorPageState extends State<CalculatorPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,10 +78,45 @@ class _CalculatorPageState extends State<CalculatorPage> {
             ),
           ],
         ),
-        body: Center(
-            child: Column(
-          children: riskFactorBrain.getRiskFactors(),
-        )),
+        body: SingleChildScrollView(
+          child: Center(
+              child: Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'History Factors',
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              Column(
+                children: riskFactorBrain.getHistoryRiskFactors(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Divider(
+                  height: 20,
+                  thickness: 5,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+              ),
+              Text(
+                'CT Factors',
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              Column(
+                children: riskFactorBrain.getHistoryRiskFactors(),
+              ),
+              Column(
+                children: riskFactorBrain.getHistoryRiskFactors(),
+              ),
+              SizedBox(
+                height: 210,
+              )
+            ],
+          )),
+        ),
       ),
     );
   }
@@ -125,6 +152,7 @@ class PredictiveValue extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 50,
                   color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],

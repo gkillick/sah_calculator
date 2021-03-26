@@ -15,9 +15,14 @@ class MyApp extends StatelessWidget {
           primaryColor: Color(0xFF6F45CB),
           scaffoldBackgroundColor: Color(0xFF6F45CB),
           textTheme: TextTheme(
-            body1: TextStyle(
+            bodyText2: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
+            ),
+            headline3: TextStyle(
+              color: Colors.white,
+              fontSize: 35,
+              fontWeight: FontWeight.w500,
             ),
           )),
       home: CalculatorPage(title: 'SAH Calculator'),
