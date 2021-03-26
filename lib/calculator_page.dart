@@ -25,6 +25,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
         controller: _pc,
         maxHeight: 700,
         borderRadius: BorderRadius.circular(25),
+        //sliding panel for Predictive Values
         panel: Column(
           children: [
             TextButton(
@@ -106,10 +107,39 @@ class _CalculatorPageState extends State<CalculatorPage> {
                 style: Theme.of(context).textTheme.headline3,
               ),
               Column(
-                children: riskFactorBrain.getHistoryRiskFactors(),
+                children: riskFactorBrain.getCTriskFactors(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Divider(
+                  height: 20,
+                  thickness: 5,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+              ),
+              Text(
+                'LP Factors',
+                style: Theme.of(context).textTheme.headline3,
               ),
               Column(
-                children: riskFactorBrain.getHistoryRiskFactors(),
+                children: riskFactorBrain.getLPriskFactors(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Divider(
+                  height: 20,
+                  thickness: 5,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+              ),
+              Text(
+                'Angio Factors',
+                style: Theme.of(context).textTheme.headline3,
+              ),
+              Column(
+                children: riskFactorBrain.getAngioRiskFactors(),
               ),
               SizedBox(
                 height: 210,
@@ -122,6 +152,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
   }
 }
 
+//bottom sheet for displaying predictive values
 class PredictiveValue extends StatelessWidget {
   final String predictiveTitle;
   final double predictiveValue;

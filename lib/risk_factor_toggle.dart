@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sah_calculator/calculator_page.dart';
 import 'package:sah_calculator/risk_factor.dart';
+import 'package:sah_calculator/risk_factor_brain.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class RiskFactorToggle extends StatelessWidget {
@@ -37,7 +39,8 @@ class RiskFactorToggle extends StatelessWidget {
               Color(0xFF73C9E2),
             ],
             onToggle: (index) {
-              print('switched to: $index');
+              //update selected risk factor
+              riskFactor.selected = index;
             },
           ),
         ],
