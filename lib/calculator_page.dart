@@ -1,194 +1,52 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sah_calculator/risk_factor_brain.dart';
+import 'package:sah_calculator/models/risk_factor_brain.dart';
+import 'package:sah_calculator/widgets/risk_factor_toggle.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:provider/provider.dart';
+import 'package:sah_calculator/widgets/factor_list.dart';
 
-RiskFactorBrain riskFactorBrain = RiskFactorBrain();
-
-class CalculatorPage extends StatefulWidget {
+class CalculatorPage extends StatelessWidget {
   CalculatorPage({Key key, this.title}) : super(key: key);
 
   final String title;
-
-  @override
-  _CalculatorPageState createState() => _CalculatorPageState();
-}
-
-class _CalculatorPageState extends State<CalculatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
-      body: SlidingUpPanel(
-        controller: _pc,
-        maxHeight: 700,
-        borderRadius: BorderRadius.circular(25),
-        //sliding panel for Predictive Values
-        panel: Column(
-          children: [
-            TextButton(
-              onPressed: () => {
-                if (_pc.isPanelOpen) {_pc.close()} else {_pc.open()}
-              },
-              style: ButtonStyle(
-                overlayColor: MaterialStateProperty.all(Colors.transparent),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    height: 40,
-                    width: 500,
-                    child: Center(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF6F3FC),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        height: 4,
-                        width: 35,
-                      ),
-                    ),
+      body: Column(
+        children: [
+          FactorsList(),
+          Container(
+            padding: EdgeInsets.all(20),
+            width: 1 / 0,
+            height: 120,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Probability for ${Provider.of<RiskFactorBrain>(context).testsPerformed} tests',
+                  style: TextStyle(color: Colors.black),
+                ),
+                Text(
+                  '2.5%',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Text(
-                      "Predictive Values",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Column(
-                  children: [
-                    PredictiveValue("Pre-CT Probability", 2.6),
-                    PredictiveValue("Pre-Lumbar Puncture", 4.0),
-                    PredictiveValue("Pre-Angiogram Probability", 55),
-                    PredictiveValue("Post-Angiogram Probability", 53),
-                  ],
-                ),
-              ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(0), topLeft: Radius.circular(0)),
             ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-              child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'History Factors',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              Column(
-                children: riskFactorBrain.getHistoryRiskFactors(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Divider(
-                  height: 20,
-                  thickness: 5,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-              ),
-              Text(
-                'CT Factors',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              Column(
-                children: riskFactorBrain.getCTriskFactors(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Divider(
-                  height: 20,
-                  thickness: 5,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-              ),
-              Text(
-                'LP Factors',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              Column(
-                children: riskFactorBrain.getLPriskFactors(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Divider(
-                  height: 20,
-                  thickness: 5,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-              ),
-              Text(
-                'Angio Factors',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              Column(
-                children: riskFactorBrain.getAngioRiskFactors(),
-              ),
-              SizedBox(
-                height: 210,
-              )
-            ],
-          )),
-        ),
-      ),
-    );
-  }
-}
-
-//bottom sheet for displaying predictive values
-class PredictiveValue extends StatelessWidget {
-  final String predictiveTitle;
-  final double predictiveValue;
-  PredictiveValue(this.predictiveTitle, this.predictiveValue);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        width: 250,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Color(0xFFF6F3FC),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Text(
-                predictiveTitle,
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                "$predictiveValue%",
-                style: TextStyle(
-                  fontSize: 50,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
           ),
-        ),
+        ],
       ),
     );
   }

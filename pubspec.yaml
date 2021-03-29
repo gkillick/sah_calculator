@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   toggle_switch: ^0.1.9
   sliding_up_panel: ^1.0.2
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

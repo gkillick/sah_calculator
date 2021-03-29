@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sah_calculator/risk_factor_toggle.dart';
+import 'package:sah_calculator/widgets/risk_factor_toggle.dart';
 
 import 'risk_factor.dart';
 
-class RiskFactorBrain {
-  List _historyRiskFactors = [
+class RiskFactorBrain extends ChangeNotifier {
+  int testsPerformed = 0;
+  List historyRiskFactors = [
     RiskFactor(
         title: "Age ≥ 40",
         positiveLR: 1.73,
@@ -78,7 +79,7 @@ class RiskFactorBrain {
     //add in other factors
   ];
 
-  List _ctRiskFactors = [
+  List ctRiskFactors = [
     RiskFactor(
         title: "< 6hours: Non contrast head CT",
         positiveLR: 234.55,
@@ -93,16 +94,9 @@ class RiskFactorBrain {
         sensitivity: 0.89,
         specificity: 1.0,
         ref: 2),
-    RiskFactor(
-        title: "Focal Neuro Deficit",
-        positiveLR: 3.26,
-        negativeLR: 0.81,
-        sensitivity: 0.31,
-        specificity: 0.93,
-        ref: 2)
   ];
 
-  List _lpRiskFactors = [
+  List lpRiskFactors = [
     RiskFactor(
         title: "Xanthochromia on visual inspection",
         positiveLR: 12.56,
@@ -119,7 +113,7 @@ class RiskFactorBrain {
         ref: 2),
   ];
 
-  List _angioRiskFactors = [
+  List angioRiskFactors = [
     RiskFactor(
         title: "Negative CT Angiogram",
         positiveLR: 1.0 / 0.0,
@@ -131,7 +125,7 @@ class RiskFactorBrain {
 
   List<Widget> getHistoryRiskFactors() {
     List<Widget> factors = [];
-    for (RiskFactor riskFactor in _historyRiskFactors) {
+    for (RiskFactor riskFactor in historyRiskFactors) {
       factors.add(RiskFactorToggle(riskFactor));
     }
     return factors;
@@ -139,7 +133,7 @@ class RiskFactorBrain {
 
   List<Widget> getCTriskFactors() {
     List<Widget> factors = [];
-    for (RiskFactor riskFactor in _ctRiskFactors) {
+    for (RiskFactor riskFactor in ctRiskFactors) {
       factors.add(RiskFactorToggle(riskFactor));
     }
     return factors;
@@ -147,7 +141,7 @@ class RiskFactorBrain {
 
   List<Widget> getLPriskFactors() {
     List<Widget> factors = [];
-    for (RiskFactor riskFactor in _lpRiskFactors) {
+    for (RiskFactor riskFactor in lpRiskFactors) {
       factors.add(RiskFactorToggle(riskFactor));
     }
     return factors;
@@ -155,13 +149,55 @@ class RiskFactorBrain {
 
   List<Widget> getAngioRiskFactors() {
     List<Widget> factors = [];
-    for (RiskFactor riskFactor in _angioRiskFactors) {
+    for (RiskFactor riskFactor in angioRiskFactors) {
       factors.add(RiskFactorToggle(riskFactor));
     }
     return factors;
   }
 
-  RiskFactor getRiskFactor() {
-    return _historyRiskFactors.first;
+  //reset selected values
+  void resetSelectedRiskFactors() {
+    historyRiskFactors.forEach((factor) => factor.selected = 1);
+    ctRiskFactors.forEach((factor) => factor.selected = 1);
+    lpRiskFactors.forEach((factor) => factor.selected = 1);
+    angioRiskFactors.forEach((factor) => factor.selected = 1);
+    calculateTestsPerformed();
+    notifyListeners();
   }
+
+  //update state of selected risk factor value
+  void updateRiskFactor(RiskFactor factor, int selectedValue) {
+    factor.selected = selectedValue;
+    calculateTestsPerformed();
+    notifyListeners();
+  }
+
+  //calculate tests performed when test selected
+  void calculateTestsPerformed() {
+    int testsPerformed = 0;
+    historyRiskFactors.forEach((factor) {
+      if (factor.selected != 1) {
+        testsPerformed++;
+      }
+    });
+    ctRiskFactors.forEach((factor) {
+      if (factor.selected != 1) {
+        testsPerformed++;
+      }
+    });
+    lpRiskFactors.forEach((factor) {
+      if (factor.selected != 1) {
+        testsPerformed++;
+      }
+    });
+    angioRiskFactors.forEach((factor) {
+      if (factor.selected != 1) {
+        testsPerformed++;
+      }
+    });
+
+    this.testsPerformed = testsPerformed;
+  }
+
+  void calculateRiskProbability() {}
 }
