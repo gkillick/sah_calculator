@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class RiskFactor {
   String title;
   double positiveLR;

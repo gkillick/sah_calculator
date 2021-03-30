@@ -32,7 +32,7 @@ class CalculatorPage extends StatelessWidget {
                   style: TextStyle(color: Colors.black),
                 ),
                 Text(
-                  '2.5%',
+                  '${Provider.of<RiskFactorBrain>(context).probabilityOfSAH.toStringAsFixed(1)}%',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 30,

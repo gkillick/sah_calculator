@@ -5,6 +5,7 @@ import 'risk_factor.dart';
 
 class RiskFactorBrain extends ChangeNotifier {
   int testsPerformed = 0;
+  double probabilityOfSAH = 0.01;
   List historyRiskFactors = [
     RiskFactor(
         title: "Age ≥ 40",
@@ -162,6 +163,7 @@ class RiskFactorBrain extends ChangeNotifier {
     lpRiskFactors.forEach((factor) => factor.selected = 1);
     angioRiskFactors.forEach((factor) => factor.selected = 1);
     calculateTestsPerformed();
+    probabilityOfSAH = 0.01;
     notifyListeners();
   }
 
@@ -169,6 +171,8 @@ class RiskFactorBrain extends ChangeNotifier {
   void updateRiskFactor(RiskFactor factor, int selectedValue) {
     factor.selected = selectedValue;
     calculateTestsPerformed();
+    calculateRiskProbability();
+    print(probabilityOfSAH);
     notifyListeners();
   }
 
@@ -199,5 +203,49 @@ class RiskFactorBrain extends ChangeNotifier {
     this.testsPerformed = testsPerformed;
   }
 
-  void calculateRiskProbability() {}
+  void calculateRiskProbability() {
+    calculateRiskForCatagory(historyRiskFactors);
+    calculateRiskForCatagory(ctRiskFactors);
+    calculateRiskForCatagory(lpRiskFactors);
+    calculateRiskForCatagory(angioRiskFactors);
+  }
+
+  void calculateRiskForCatagory(List factors) {
+    factors.forEach((factor) {
+      if (factor.selected != 1) {
+        probabilityOfSAH = getNewProbability(probabilityOfSAH,
+            factor.sensitivity, factor.specificity, factor.selected);
+      }
+    });
+  }
+
+  //Calculate a post-test probability from pretest, sens, spec, and mode
+// where mode==1 is "+" test result, mode==-1 is "-" test result
+  double getNewProbability(pre, sens, spec, selected) {
+    double mode;
+    if (selected == 0) {
+      mode = 1.0;
+    } else {
+      mode = -1.0;
+    }
+
+    //ok, basically all we have to do is calculate that box
+    /*         Disease
+    * Test   +       -
+    *  +     a       b
+    *  -     c       d
+    *
+    * note that sens=a/(a+c), spec=d/(b+d), p=a+c.
+    */
+    double a = sens * pre;
+    double c = (1 - sens) * pre;
+    double d = spec * (1 - pre);
+    double b = (1 - spec) * (1 - pre);
+
+    if (mode == 1) {
+      return a / (a + b);
+    } else {
+      return c / (c + d);
+    }
+  }
 }
