@@ -6,6 +6,22 @@ import 'risk_factor.dart';
 class RiskFactorBrain extends ChangeNotifier {
   int testsPerformed = 0;
   double probabilityOfSAH = 0.01;
+  bool peakHeadache = false;
+
+  double postHistoryProbability = 0;
+  double postCTProbability = 0;
+  double postLPProbability = 0;
+  double postAngioProbability = 0;
+
+  List ottowaRule = [
+    RiskFactor(
+        title: "Ottawa rule",
+        positiveLR: 1.73,
+        negativeLR: 0.21,
+        sensitivity: 0.9,
+        specificity: 0.7,
+        ref: 2),
+  ];
   List historyRiskFactors = [
     RiskFactor(
         title: "Age ≥ 40",
@@ -162,8 +178,10 @@ class RiskFactorBrain extends ChangeNotifier {
     ctRiskFactors.forEach((factor) => factor.selected = 1);
     lpRiskFactors.forEach((factor) => factor.selected = 1);
     angioRiskFactors.forEach((factor) => factor.selected = 1);
+    peakHeadache = false;
     calculateTestsPerformed();
     probabilityOfSAH = 0.01;
+    calculateRiskProbability();
     notifyListeners();
   }
 
@@ -172,8 +190,6 @@ class RiskFactorBrain extends ChangeNotifier {
     factor.selected = selectedValue;
     calculateTestsPerformed();
     calculateRiskProbability();
-    print(probabilityOfSAH);
-    notifyListeners();
   }
 
   //calculate tests performed when test selected
@@ -204,10 +220,20 @@ class RiskFactorBrain extends ChangeNotifier {
   }
 
   void calculateRiskProbability() {
+    if (peakHeadache) {
+      probabilityOfSAH = 0.075;
+    } else {
+      probabilityOfSAH = 0.01;
+    }
     calculateRiskForCatagory(historyRiskFactors);
+    postHistoryProbability = probabilityOfSAH;
     calculateRiskForCatagory(ctRiskFactors);
+    postCTProbability = probabilityOfSAH;
     calculateRiskForCatagory(lpRiskFactors);
+    postLPProbability = probabilityOfSAH;
     calculateRiskForCatagory(angioRiskFactors);
+    postAngioProbability = probabilityOfSAH;
+    notifyListeners();
   }
 
   void calculateRiskForCatagory(List factors) {
@@ -228,15 +254,6 @@ class RiskFactorBrain extends ChangeNotifier {
     } else {
       mode = -1.0;
     }
-
-    //ok, basically all we have to do is calculate that box
-    /*         Disease
-    * Test   +       -
-    *  +     a       b
-    *  -     c       d
-    *
-    * note that sens=a/(a+c), spec=d/(b+d), p=a+c.
-    */
     double a = sens * pre;
     double c = (1 - sens) * pre;
     double d = spec * (1 - pre);
@@ -247,5 +264,12 @@ class RiskFactorBrain extends ChangeNotifier {
     } else {
       return c / (c + d);
     }
+  }
+
+  //toggle peak headache within 1 hr to set the SAH probability starting point
+  bool setHeadache() {
+    peakHeadache = !peakHeadache;
+    calculateRiskProbability();
+    return peakHeadache;
   }
 }

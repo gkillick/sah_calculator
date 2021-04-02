@@ -18,7 +18,7 @@ class CalculatorPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          FactorsList(),
+          FactorList(),
           Container(
             padding: EdgeInsets.all(20),
             width: 1 / 0,
@@ -32,7 +32,7 @@ class CalculatorPage extends StatelessWidget {
                   style: TextStyle(color: Colors.black),
                 ),
                 Text(
-                  '${Provider.of<RiskFactorBrain>(context).probabilityOfSAH.toStringAsFixed(1)}%',
+                  '${(Provider.of<RiskFactorBrain>(context).probabilityOfSAH * 100).toStringAsFixed(1)}%',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 30,
