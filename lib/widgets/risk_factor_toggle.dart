@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sah_calculator/calculator_page.dart';
 import 'package:sah_calculator/models/risk_factor.dart';
@@ -17,7 +18,20 @@ class RiskFactorToggle extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(riskFactor.title),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    riskFactor.title,
+                    style: TextStyle(),
+                  ),
+                  ConditionalToolTip(
+                    tooltipText: riskFactor.tooltip,
+                  ),
+                ],
+              ),
+            ),
           ),
           ToggleSwitch(
             minWidth: 90.0,
@@ -48,5 +62,36 @@ class RiskFactorToggle extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ConditionalToolTip extends StatelessWidget {
+  ConditionalToolTip({this.tooltipText});
+
+  String tooltipText;
+  @override
+  Widget build(BuildContext context) {
+    return (tooltipText != null)
+        ? Tooltip(
+            message: tooltipText,
+            decoration: BoxDecoration(
+              color: Color(0xff2b2b2b),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            padding: EdgeInsets.all(15),
+            textStyle: TextStyle(fontSize: 12, color: Colors.white),
+            child: IconButton(
+              icon: Icon(
+                CupertinoIcons.info,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                /* your code */
+              },
+            ),
+          )
+        : SizedBox(
+            height: 0,
+          );
   }
 }

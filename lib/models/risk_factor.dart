@@ -1,5 +1,6 @@
 class RiskFactor {
   String title;
+  String tooltip;
   double positiveLR;
   double negativeLR;
   double sensitivity;
@@ -13,5 +14,6 @@ class RiskFactor {
       this.negativeLR,
       this.sensitivity,
       this.specificity,
-      this.ref});
+      this.ref,
+      this.tooltip});
 }

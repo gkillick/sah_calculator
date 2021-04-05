@@ -16,7 +16,11 @@ class FactorList extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 20,
+                height: 30,
+              ),
+              Text(
+                'Pretest Probability',
+                style: Theme.of(context).textTheme.headline3,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -24,10 +28,24 @@ class FactorList extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Peak headache within 1 hr'),
+                      child: Text('> 1 hour to peak headache: 1%'),
                     ),
-                    HeadacheToggle(),
+                    HeadacheToggle(toggleTrue: false),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('< 1 hour to peak severe headache: 7.5%'),
+                    ),
+                    HeadacheToggle(toggleTrue: true),
                   ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Divider(
+                  height: 20,
+                  thickness: 5,
+                  indent: 20,
+                  endIndent: 20,
                 ),
               ),
               Text(
@@ -40,7 +58,7 @@ class FactorList extends StatelessWidget {
               ),
               ProbabilityRecommendation(
                   title: 'Post History Probability',
-                  threshold: .02,
+                  threshold: 2,
                   probability: Provider.of<RiskFactorBrain>(context)
                       .postHistoryProbability,
                   recommendation: 'Proceed to CT Test'),
@@ -62,8 +80,8 @@ class FactorList extends StatelessWidget {
                     Provider.of<RiskFactorBrain>(context).getCTriskFactors(),
               ),
               ProbabilityRecommendation(
-                  title: 'Post History Probability',
-                  threshold: .5,
+                  title: 'Post CT Probability',
+                  threshold: 2,
                   probability:
                       Provider.of<RiskFactorBrain>(context).postCTProbability,
                   recommendation:
@@ -86,8 +104,8 @@ class FactorList extends StatelessWidget {
                     Provider.of<RiskFactorBrain>(context).getLPriskFactors(),
               ),
               ProbabilityRecommendation(
-                  title: 'Post CT Probability',
-                  threshold: .16,
+                  title: 'Post LP Probability',
+                  threshold: 2,
                   probability:
                       Provider.of<RiskFactorBrain>(context).postLPProbability,
                   recommendation:
@@ -102,7 +120,7 @@ class FactorList extends StatelessWidget {
                 ),
               ),
               Text(
-                'Angio Factors',
+                'CT Angio Factors',
                 style: Theme.of(context).textTheme.headline3,
               ),
               Column(
@@ -111,7 +129,7 @@ class FactorList extends StatelessWidget {
               ),
               ProbabilityRecommendation(
                   title: 'Post Angio Probability',
-                  threshold: .86,
+                  threshold: 2,
                   probability: Provider.of<RiskFactorBrain>(context)
                       .postAngioProbability,
                   recommendation: 'SAH likely, consult neurosurgery, LP'),
@@ -156,6 +174,8 @@ class FactorList extends StatelessWidget {
 }
 
 class HeadacheToggle extends StatefulWidget {
+  HeadacheToggle({this.toggleTrue});
+  bool toggleTrue;
   @override
   _HeadacheToggleState createState() => _HeadacheToggleState();
 }
@@ -163,8 +183,13 @@ class HeadacheToggle extends StatefulWidget {
 class _HeadacheToggleState extends State<HeadacheToggle> {
   @override
   Widget build(BuildContext context) {
+    //conditionally set the toggle so they are mutually exclusive
+    bool toggleValue = Provider.of<RiskFactorBrain>(context).peakHeadache;
+    if (!widget.toggleTrue) {
+      toggleValue = !toggleValue;
+    }
     return Switch(
-      value: Provider.of<RiskFactorBrain>(context).peakHeadache,
+      value: toggleValue,
       onChanged: (value) {
         setState(() {
           value = Provider.of<RiskFactorBrain>(context, listen: false)

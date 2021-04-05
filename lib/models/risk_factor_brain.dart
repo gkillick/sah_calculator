@@ -8,10 +8,10 @@ class RiskFactorBrain extends ChangeNotifier {
   double probabilityOfSAH = 0.01;
   bool peakHeadache = false;
 
-  double postHistoryProbability = 0;
-  double postCTProbability = 0;
-  double postLPProbability = 0;
-  double postAngioProbability = 0;
+  double postHistoryProbability = 0.01;
+  double postCTProbability = 0.01;
+  double postLPProbability = 0.01;
+  double postAngioProbability = 0.01;
 
   List ottowaRule = [
     RiskFactor(
@@ -46,6 +46,8 @@ class RiskFactorBrain extends ChangeNotifier {
         ref: 2),
     RiskFactor(
         title: "Objective Neck Stiffness",
+        tooltip:
+            "Unable to flex chin to chest or unable to lift head of bed 8cm while supine",
         positiveLR: 6.59,
         negativeLR: 0.78,
         sensitivity: 0.29,
@@ -73,7 +75,7 @@ class RiskFactorBrain extends ChangeNotifier {
         specificity: 0.72,
         ref: 2),
     RiskFactor(
-        title: "Burst of Explode at onset (1s to peak)",
+        title: "Burst or Explode at onset (1s to peak)",
         positiveLR: 1.34,
         negativeLR: 0.74,
         sensitivity: 0.58,
@@ -122,12 +124,10 @@ class RiskFactorBrain extends ChangeNotifier {
         specificity: 0.93,
         ref: 2),
     RiskFactor(
-        title: "RBC in tube 4 > 1000",
-        positiveLR: 5.66,
-        negativeLR: 0.21,
-        sensitivity: 0.76,
-        specificity: 0.88,
-        ref: 2),
+      title: "> 2000 RBC in tube 4 and xanthochromia",
+      sensitivity: 1.0,
+      specificity: .912,
+    ),
   ];
 
   List angioRiskFactors = [
@@ -187,6 +187,20 @@ class RiskFactorBrain extends ChangeNotifier {
 
   //update state of selected risk factor value
   void updateRiskFactor(RiskFactor factor, int selectedValue) {
+    //special case for CT mutually exclusive
+    if (factor.title == "< 6hours: Non contrast head CT") {
+      ctRiskFactors
+          .firstWhere(
+              (factor) => factor.title == "> 6 hours: Non contrast CT head")
+          .selected = 1;
+    }
+    if (factor.title == "> 6 hours: Non contrast CT head") {
+      ctRiskFactors
+          .firstWhere(
+              (factor) => factor.title == "< 6hours: Non contrast head CT")
+          .selected = 1;
+    }
+
     factor.selected = selectedValue;
     calculateTestsPerformed();
     calculateRiskProbability();
