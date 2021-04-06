@@ -20,6 +20,9 @@ class RiskFactorBrain extends ChangeNotifier {
 
   //reset selected values
   void reset() {
+    this.testSets.forEach((element) {
+      element.resetFactors();
+    });
     this.calculate();
     this.notifyListeners();
   }
