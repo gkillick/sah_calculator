@@ -62,7 +62,7 @@ class RiskFactorBrain extends ChangeNotifier {
   }
 
   void buildRiskFactorTests() {
-    final dataDir = "data/";
+    final dataDir = "../data/";
     final files = ['1.csv', '2.csv', '3.csv', '4.csv'];
     files.forEach((fileName) async {
       testSets.add(await getFactorList(dataDir + fileName));
