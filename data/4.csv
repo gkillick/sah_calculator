@@ -1,0 +1,3 @@
+Lumbar Puncture,Postive LR,Negative LR,Sensitivity,Specificity,Reference,Tooltip,MutuallyExclusive
+Xanthochromia on visual inspection,12.56,0.3,0.71,0.93,2,0,
+RBC>2000 and xanthochromia,5.66,0.21,1,0.912,2,0,
