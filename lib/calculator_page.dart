@@ -6,12 +6,17 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:provider/provider.dart';
 import 'package:sah_calculator/widgets/factor_list.dart';
 
+import 'models/risk_factor.dart';
+
 class CalculatorPage extends StatelessWidget {
   CalculatorPage({Key key, this.title}) : super(key: key);
 
-  final String title;
+  List<SetOfTests> testSets = [];
+
+  String title;
   @override
   Widget build(BuildContext context) {
+    Provider.of<RiskFactorBrain>(context).buildRiskFactorTests();
     return Scaffold(
       appBar: AppBar(
         title: Text(title),

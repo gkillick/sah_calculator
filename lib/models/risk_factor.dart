@@ -15,14 +15,15 @@ class RiskFactor {
   int selected = 1; //0 1 or 2
   int mutuallyExclusive = 0;
 
-  RiskFactor({this.title,
-    this.positiveLR,
-    this.negativeLR,
-    this.sensitivity,
-    this.specificity,
-    this.ref,
-    this.tooltip,
-    this.mutuallyExclusive});
+  RiskFactor(
+      {this.title,
+      this.positiveLR,
+      this.negativeLR,
+      this.sensitivity,
+      this.specificity,
+      this.ref,
+      this.tooltip,
+      this.mutuallyExclusive});
 }
 
 class SetOfTests {
@@ -31,8 +32,8 @@ class SetOfTests {
   double postTestProbability = 0;
   List<RiskFactor> riskFactors;
 
-  SetOfTests(String name, List<RiskFactor> riskFactors,
-      double preTestProbability) {
+  SetOfTests(
+      String name, List<RiskFactor> riskFactors, double preTestProbability) {
     this.name = name;
     this.riskFactors = riskFactors;
     this.calculate(preTestProbability);
@@ -48,18 +49,15 @@ class SetOfTests {
 
   void resetFactors() {
     this.riskFactors.forEach((factor) {
-      factor.selected = 1
+      factor.selected = 1;
     });
   }
 
   double calculate(double preTestProbability) {
     this.postTestProbability = preTestProbability;
     this.riskFactors.forEach((factor) {
-      this.postTestProbability = updateProbability(
-          this.postTestProbability,
-          factor.sensitivity,
-          factor.specificity,
-          factor.selected);
+      this.postTestProbability = updateProbability(this.postTestProbability,
+          factor.sensitivity, factor.specificity, factor.selected);
       if (factor.selected != 1) {
         this.testsPerformed++;
       }
@@ -67,7 +65,6 @@ class SetOfTests {
     return this.postTestProbability;
   }
 }
-
 
 double updateProbability(pre, sens, spec, selected) {
   double mode;
@@ -88,28 +85,27 @@ double updateProbability(pre, sens, spec, selected) {
   }
 }
 
-
 Future<SetOfTests> getFactorList(String path) async {
   final input = new File(path).openRead();
+  //problem is between here?
   final fields = await input
       .transform(utf8.decoder)
       .transform(new CsvToListConverter(eol: "\n"))
       .toList();
-  final name = fields[0][0]
+  //and here
+  final name = fields[0][0];
   List<RiskFactor> riskFactors = [];
   for (var i = 1; i < fields.length; i++) {
-    riskFactors.add(
-        new RiskFactor(
-            title: fields[i][0],
-            positiveLR: fields[i][1],
-            negativeLR: fields[i][2],
-            sensitivity: fields[i][3],
-            specificity: fields[i][4],
-            ref: fields[i][5],
-            tooltip: fields[i][6],
-            mutuallyExclusive: fields[i][7]
-        )
-    );
+    riskFactors.add(new RiskFactor(
+      title: fields[i][0],
+      positiveLR: fields[i][1],
+      negativeLR: fields[i][2],
+      sensitivity: fields[i][3],
+      specificity: fields[i][4],
+      ref: fields[i][5],
+      tooltip: fields[i][6],
+      mutuallyExclusive: fields[i][7],
+    ));
   }
   return SetOfTests(name, riskFactors, 0.0);
 }

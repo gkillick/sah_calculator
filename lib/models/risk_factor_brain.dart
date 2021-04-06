@@ -27,16 +27,18 @@ class RiskFactorBrain extends ChangeNotifier {
   }
 
   //update state of selected risk factor value
-  void updateRiskFactor(RiskFactor in_factor, int selectedValue) {
+  void updateRiskFactor(RiskFactor inFactor, int selectedValue) {
     //special case for CT mutually exclusive
-    if (in_factor.mutuallyExclusive > 0) {
-      this.allFactors
-          .where(
-              (factor) => in_factor.mutuallyExclusive == factor.mutuallyExclusive)
-          .forEach((factor) {factor.selected = 1;
-          });
+    if (inFactor.mutuallyExclusive > 0) {
+      this
+          .allFactors
+          .where((factor) =>
+              inFactor.mutuallyExclusive == factor.mutuallyExclusive)
+          .forEach((factor) {
+        factor.selected = 1;
+      });
     }
-    in_factor.selected = selectedValue;
+    inFactor.selected = selectedValue;
     this.calculate();
   }
 
@@ -48,7 +50,7 @@ class RiskFactorBrain extends ChangeNotifier {
     }
     this.testSets.forEach((testSet) {
       probabilityOfSAH = testSet.calculate(probabilityOfSAH);
-    })
+    });
     notifyListeners();
   }
 
@@ -57,5 +59,13 @@ class RiskFactorBrain extends ChangeNotifier {
     peakHeadache = !peakHeadache;
     calculate();
     return peakHeadache;
+  }
+
+  void buildRiskFactorTests() {
+    final dataDir = "data/";
+    final files = ['1.csv', '2.csv', '3.csv', '4.csv'];
+    files.forEach((fileName) async {
+      testSets.add(await getFactorList(dataDir + fileName));
+    });
   }
 }

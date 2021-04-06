@@ -5,22 +5,15 @@ import 'package:sah_calculator/models/risk_factor_brain.dart';
 import 'package:sah_calculator/models/risk_factor.dart';
 
 void main() async {
-  const dataDir = "data/";
-  const files = ['1.csv', '2.csv', '3.csv', '4.csv'];
   List<SetOfTests> testSets = [];
-  files.forEach((fn) async {
-    testSets.add(
-      await getFactorList(dataDir + fn);
-    );
-  });
-  final brain = RiskFactorBrain(testSets)
+  var brain = RiskFactorBrain(testSets);
   runApp(MyApp(brain));
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   RiskFactorBrain riskFactorBrain;
-  MyApp(brain){
+  MyApp(brain) {
     this.riskFactorBrain = brain;
   }
   @override
