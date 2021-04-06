@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<RiskFactorBrain>(
       create: (context) => this.riskFactorBrain,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'SAH Calculator',
         theme: ThemeData.light().copyWith(
             primaryColor: Color(0xFF6F45CB),
             scaffoldBackgroundColor: Color(0xFF6F45CB),
