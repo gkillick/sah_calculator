@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sah_calculator/widgets/risk_factor_toggle.dart';
 import 'risk_factor.dart';
 
 class RiskFactorBrain extends ChangeNotifier {

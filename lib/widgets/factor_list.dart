@@ -11,7 +11,7 @@ class FactorList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> col1 = [
+    List<Widget> pretest = [
       SizedBox(
         height: 30,
       ),
@@ -50,7 +50,7 @@ class FactorList extends StatelessWidget {
       ),
     ];
 
-    List<Widget> col2 = [];
+    List<Widget> factorLists = [];
 
     Provider
       .of<RiskFactorBrain>(context)
@@ -65,18 +65,18 @@ class FactorList extends StatelessWidget {
               .headline3,
           )
         );
-        col2.add(Column(
+        factorLists.add(Column(
             children: testSet.getFactors(),
           )
         );
-        col2.add(ProbabilityRecommendation(
+        factorLists.add(ProbabilityRecommendation(
             title: testSet.name,
             threshold: 2,
             probability: testSet.postTestProbability,
             recommendation: "Not Implemented",
             )
         );
-          col2.add(
+          factorLists.add(
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: Divider(
@@ -90,7 +90,7 @@ class FactorList extends StatelessWidget {
           }
       );
 
-    List<Widget> col3 = [
+    List<Widget> bottomOfApp = [
       SizedBox(
         width: 275,
         child: TextButton(
@@ -121,7 +121,7 @@ class FactorList extends StatelessWidget {
       child: SingleChildScrollView(
         child: Center(
           child: Column(
-            children: col1 + col2 + col3
+            children: pretest + factorLists + bottomOfApp
           ),
         ),
       ),
