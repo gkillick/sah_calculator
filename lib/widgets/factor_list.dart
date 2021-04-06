@@ -57,7 +57,7 @@ class FactorList extends StatelessWidget {
       .testSets
       .forEach(
           (testSet) {
-        col2.add(Text(
+        factorLists.add(Text(
           testSet.name,
           style: Theme
               .of(context)
