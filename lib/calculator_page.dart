@@ -28,7 +28,7 @@ class CalculatorPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Probability for ${Provider.of<RiskFactorBrain>(context).testsPerformed} tests',
+                  'Probability of SAH', //for ${Provider.of<RiskFactorBrain>(context).testsPerformed} tests',
                   style: TextStyle(color: Colors.black),
                 ),
                 Text(
