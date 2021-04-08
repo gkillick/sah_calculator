@@ -5,7 +5,7 @@ import 'package:sah_calculator/models/risk_factor_brain.dart';
 import 'package:sah_calculator/models/risk_factor.dart';
 
 void main() async {
-  List<SetOfTests> testSets = [];
+  List<SetOfRiskFactors> testSets = [];
   var brain = RiskFactorBrain(testSets);
   runApp(MyApp(brain));
 }

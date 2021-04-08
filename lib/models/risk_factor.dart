@@ -1,8 +1,9 @@
-import 'package:csv/csv.dart';
-import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:sah_calculator/widgets/risk_factor_toggle.dart';
+import "web_io.dart"
+  if (dart.library.io) "mobile_io.dart"
+  as my_io;
+
 
 class RiskFactor {
   String title;
@@ -26,13 +27,13 @@ class RiskFactor {
       this.mutuallyExclusive});
 }
 
-class SetOfTests {
+class SetOfRiskFactors {
   String name;
   int testsPerformed = 0;
   double postTestProbability = 0;
   List<RiskFactor> riskFactors;
 
-  SetOfTests(
+  SetOfRiskFactors(
       String name, List<RiskFactor> riskFactors, double preTestProbability) {
     this.name = name;
     this.riskFactors = riskFactors;
@@ -85,14 +86,8 @@ double updateProbability(pre, sens, spec, selected) {
   }
 }
 
-Future<SetOfTests> getFactorList(String path) async {
-  final input = new File(path).openRead();
-  //problem is between here?
-  final fields = await input
-      .transform(utf8.decoder)
-      .transform(new CsvToListConverter(eol: "\n"))
-      .toList();
-  //and here
+Future<SetOfRiskFactors> getFactorList(String path) async {
+  final fields = await my_io.getCsvAsList(path);
   final name = fields[0][0];
   List<RiskFactor> riskFactors = [];
   for (var i = 1; i < fields.length; i++) {
@@ -107,5 +102,5 @@ Future<SetOfTests> getFactorList(String path) async {
       mutuallyExclusive: fields[i][7],
     ));
   }
-  return SetOfTests(name, riskFactors, 0.0);
+  return SetOfRiskFactors(name, riskFactors, 0.0);
 }

@@ -5,10 +5,10 @@ class RiskFactorBrain extends ChangeNotifier {
   int testsPerformed = 0;
   double probabilityOfSAH = 0.01;
   bool peakHeadache = false;
-  List<SetOfTests> testSets = [];
+  List<SetOfRiskFactors> testSets = [];
   List<RiskFactor> allFactors = [];
 
-  RiskFactorBrain(List<SetOfTests> testSets) {
+  RiskFactorBrain(List<SetOfRiskFactors> testSets) {
     this.testSets = testSets;
     this.testSets.forEach((testSet) {
       testSet.riskFactors.forEach((factor) {
@@ -66,6 +66,11 @@ class RiskFactorBrain extends ChangeNotifier {
     final files = ['1.csv', '2.csv', '3.csv', '4.csv'];
     files.forEach((fileName) async {
       testSets.add(await getFactorList(dataDir + fileName));
+    });
+    this.testSets.forEach((testSet) {
+      testSet.riskFactors.forEach((factor) {
+        this.allFactors.add(factor);
+      });
     });
   }
 }

@@ -11,7 +11,7 @@ import 'models/risk_factor.dart';
 class CalculatorPage extends StatelessWidget {
   CalculatorPage({Key key, this.title}) : super(key: key);
 
-  List<SetOfTests> testSets = [];
+  List<SetOfRiskFactors> testSets = [];
 
   String title;
   @override
