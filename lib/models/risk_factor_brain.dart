@@ -101,9 +101,9 @@ class RiskFactorBrain extends ChangeNotifier {
   List ctRiskFactors = [
     RiskFactor(
         title: "< 6hours: Non contrast head CT",
-        positiveLR: 234.55,
+        positiveLR: 1/0,
         negativeLR: 0.01,
-        sensitivity: 0.97,
+        sensitivity: 0.955,
         specificity: 1.0,
         ref: 2),
     RiskFactor(
@@ -134,7 +134,7 @@ class RiskFactorBrain extends ChangeNotifier {
 
   List angioRiskFactors = [
     RiskFactor(
-        title: "Negative CT Angiogram",
+        title: "CT Angiogram",
         positiveLR: 1.0 / 0.0,
         negativeLR: 0.02,
         sensitivity: 0.98,
